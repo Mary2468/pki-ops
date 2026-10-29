@@ -1,0 +1,28 @@
+# Politique de certification de l'AC intermédiaire du laboratoire.
+# Appliquée par du code (outils/politique.py), jamais par le modèle de langage.
+version: 1
+domaines_autorises:        # un nom DNS doit être égal à l'un d'eux ou en être un sous-domaine
+  - lab.internal
+noms_interdits:            # refusés même s'ils sont dans un domaine autorisé
+  - ca.lab.internal
+  - root.lab.internal
+  - admin.lab.internal
+caracteres_generiques: false
+san_max: 5
+profils:
+  serveur:
+    duree_max_jours: 90
+    usages_cle_etendus: [serverAuth]
+  client:
+    duree_max_jours: 90
+    usages_cle_etendus: [clientAuth]
+  serveur_et_client:
+    duree_max_jours: 90
+    usages_cle_etendus: [serverAuth, clientAuth]
+cles:
+  rsa_taille_min: 2048
+  courbes_ec: [secp256r1, secp384r1]
+sujet:
+  attributs_autorises: [CN, O, OU, C]
+  longueur_max_valeur: 64
+  motif_valeur: "^[A-Za-z0-9 ._@:-]+$"   # un texte libre (consigne cachée) est refusé par construction

@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+TODO_HUMAIN.md
+# Matériel de PKI généré à l'exécution : jamais publié
+pki/
+*.key
+*.sec
+minisign.key
+*.p12
+*.pfx
+*-key.pem
+.env
