@@ -151,9 +151,15 @@ def est_revoque(crl: x509.CertificateRevocationList, cert: x509.Certificate) -> 
 def verifier_chaine(feuille: x509.Certificate, intermediaires: list[x509.Certificate],
                     racines: list[x509.Certificate], nom_dns: str, profil: str = "serveur",
                     crl: x509.CertificateRevocationList | None = None,
-                    quand: dt.datetime | None = None) -> tuple[bool, str]:
-    """Vérifie la chaîne (RFC 5280, contraintes de nom comprises) puis la CRL. Renvoie (ok, motif)."""
+                    quand: dt.datetime | None = None,
+                    crl_racine: x509.CertificateRevocationList | None = None) -> tuple[bool, str]:
+    """Vérifie la chaîne (RFC 5280, contraintes de nom comprises) puis les CRL. Renvoie (ok, motif).
+
+    `crl_racine` est la CRL signée par la racine : elle révoque l'intermédiaire en cas de compromission.
+    """
     quand = quand or maintenant()
+    if crl_racine is not None and intermediaires and est_revoque(crl_racine, intermediaires[0]):
+        return False, "intermédiaire révoquée par la racine"
     pb = PolicyBuilder().store(Store(racines)).time(quand)
     try:
         if profil == "client":
