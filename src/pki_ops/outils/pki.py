@@ -168,6 +168,8 @@ def verifier_chaine(feuille: x509.Certificate, intermediaires: list[x509.Certifi
             pb.build_server_verifier(x509.DNSName(nom_dns)).verify(feuille, intermediaires)
     except VerificationError as e:
         return False, f"chaîne refusée : {e}"
+    except ValueError as e:
+        return False, f"nom invalide pour la vérification : {e}"
     if crl is not None and est_revoque(crl, feuille):
         return False, "certificat révoqué"
     return True, "ok"

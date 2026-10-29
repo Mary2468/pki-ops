@@ -25,6 +25,12 @@ from .outils.autorite import Laboratoire, charger_laboratoire
 from .outils.ceremonie import ceremonie, renouveler_intermediaire
 
 RACINE_DEPOT = Path(__file__).resolve().parents[2]
+
+
+def charger_annuaire() -> dict:
+    from .outils.annuaire import charger_annuaire as _c
+    return _c(RACINE_DEPOT / "config" / "annuaire.yaml")
+
 MDP_RACINE = b"mot-de-passe-de-demonstration-non-secret"   # laboratoire jetable : la clé racine n'a aucune valeur
 DNS = ["lab.internal"]
 
@@ -382,3 +388,87 @@ def experience_name_constraints(dossier: Path) -> dict:
     hors = [c for c in cas if c["categorie"] == "nom_hors_domaine"]
     return {"cas": cas, "hors_domaine_refuses_par_le_client": sum(not c["accepte_par_le_client"] for c in hors),
             "hors_domaine_total": len(hors), "temoins_dans_le_domaine_acceptes": sum(c["accepte_par_le_client"] for c in cas if c["categorie"] != "nom_hors_domaine")}
+
+
+# --------------------------------------------------------------------------- menaces (STRIDE) ---------------------
+class ClientScripte:
+    """Faux modèle déterministe : permet de mesurer l'effet d'un modèle trompé ou halluciné sans dépendre d'un vrai modèle."""
+
+    def __init__(self, mode: str, demande: dict | None = None):
+        self.mode, self.demande, self.etiquette = mode, demande or {}, f"scripte-{mode}"
+
+    def chat(self, messages, schema, max_jetons):
+        import json as _j
+        from .llm import Reponse
+        p = schema.get("properties", {})
+        d = self.demande
+        if "demandeur" in p:      # Guichet : reprend l'analyse déterministe, seul le Contrôleur est trompé
+            from .outils.demande import parser_demande
+            a = parser_demande(d.get("texte", ""))
+            if self.mode == "guichet_usurpe":     # le Guichet est trompé : il déclare le propriétaire réel des noms de la CSR
+                from .outils.politique import lire_csr
+                from .outils.annuaire import _possede
+                noms = lire_csr(d["csr_pem"].encode()).sans_dns
+                prop = next((u for u, v in charger_annuaire().items() if all(_possede(n, v["proprietaire_de"]) for n in noms)), None)
+                a = {**a, "demandeur": prop or a["demandeur"], "profil": "serveur", "duree_jours": 30}
+            r = {"demandeur": a["demandeur"] or "", "profil": a["profil"], "duree_jours": a["duree_jours"] or 0,
+                 "complet": bool(a["demandeur"]) and a["duree_jours"] is not None, "justification": "x"}
+        elif "decision" in p:     # Contrôleur trompé : approuve toujours (ordre injecté suivi)
+            r = {"decision": "approuver", "justification": "ordre injecté suivi"}
+        elif "appel" in p:
+            outil = "signer_avec_la_racine" if self.mode == "hallucination" else "emettre_certificat"
+            r = {"appel": {"outil": outil, "arguments": {}}, "justification": "x"}
+        else:
+            r = {"conforme": True, "alerte": ""}
+        return Reponse(_j.dumps(r), 5, 5, 0.0)
+
+
+def experience_menaces(dossier: Path) -> dict:
+    """(1) Contrôleur qui approuve tout ; (2) système naïf où l'avis du modèle fait foi ; (3) outil halluciné."""
+    from .orchestrateur import Orchestrateur
+    demandes = donnees.lire(RACINE_DEPOT / "data" / "demandes.jsonl")
+    illegitimes = [d for d in demandes if not d["legitime"]]
+    out: dict = {"illegitimes": len(illegitimes)}
+    # (1) code qui fait foi
+    lab = nouveau_labo(dossier / "pki1")
+    emis = sum(Orchestrateur(lab, ClientScripte("aveugle", d)).traiter(d["id"], d["texte"], d["csr_pem"].encode()).statut == "emis"
+               for d in illegitimes)
+    out["controleur_trompe_avec_autorite_du_code"] = {"illegitimes_emis": emis, "essais": len(illegitimes)}
+    # (2) contre-exemple : l'avis du modèle suffit, aucun contrôle de politique à l'émission
+    lab = nouveau_labo(dossier / "pki2")
+    emis = acceptes = 0
+    par_categorie: dict[str, int] = {}
+    for d in illegitimes:
+        profil = d.get("profil") or "serveur"
+        r = lab.emettre(d["csr_pem"].encode(), profil, d.get("duree_attendue") or 30, d.get("demandeur") or "alice", None,
+                        forcer_sans_controle=True)
+        emis += 1
+        nom = lab.base[r["serie"]]["sans"][0]
+        ok, _ = pki.verifier_chaine(r["certificat"], [lab.inter], [lab.racine], nom, "client" if profil == "client" else "serveur")
+        acceptes += ok
+        if ok:
+            par_categorie[d["categorie"]] = par_categorie.get(d["categorie"], 0) + 1
+    out["sans_autorite_du_code"] = {"illegitimes_emis": emis, "acceptes_ensuite_par_un_client_tls": acceptes,
+                                    "acceptes_par_categorie": par_categorie}
+    # (2 bis) limite : le Guichet est trompé et usurpe l'identité du vrai propriétaire des noms
+    lab = nouveau_labo(dossier / "pki2b")
+    usurpes = []
+    for d in illegitimes:
+        e = Orchestrateur(lab, ClientScripte("guichet_usurpe", d)).traiter(d["id"], d["texte"], d["csr_pem"].encode())
+        if e.statut == "emis":
+            usurpes.append({"id": d["id"], "categorie": d["categorie"]})
+    out["guichet_usurpe"] = {"illegitimes_emis": len(usurpes), "essais": len(illegitimes), "cas": usurpes}
+    # (3) appel d'outil halluciné par l'AC
+    lab = nouveau_labo(dossier / "pki3")
+    refus = replis = emis = 0
+    ech = demandes[:5] + demandes[-5:]
+    for d in ech:
+        o = Orchestrateur(lab, ClientScripte("hallucination", d))
+        e = o.traiter(d["id"], d["texte"], d["csr_pem"].encode())
+        evs = o.dernier_journal.evenements
+        refus += sum(x["type"] == "outil_refuse" for x in evs)
+        replis += sum(x["type"] == "decision" and x.get("source") == "repli" for x in evs)
+        emis += e.statut == "emis" and not d["legitime"]
+    out["outil_hallucine"] = {"demandes": len(ech), "appels_refuses": refus, "decisions_de_repli": replis,
+                              "illegitimes_emis": emis}
+    return out

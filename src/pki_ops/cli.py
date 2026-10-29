@@ -56,7 +56,7 @@ def cmd_rejouer(args: argparse.Namespace) -> int:
 
 
 def cmd_evaluer(args: argparse.Namespace) -> int:
-    brut, traces = ev.RACINE / "results" / "raw", ev.RACINE / "traces"
+    brut, traces = ev.RESULTATS / "raw", ev.TRACES
     if args.what == "baseline":
         r = ev.evaluer_sans_llm(brut / "campagne_sans_llm.jsonl")
         print(f"{len(r)} demandes, {sum(x['emis'] for x in r)} certificats émis")

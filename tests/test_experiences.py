@@ -50,3 +50,13 @@ def test_ocsp_signale_la_revocation(tmp_path):
     assert r["ocsp"]["delai_revocation_a_statut_revoque_ms"] is not None
     t = r["crl"]["taille_par_nombre_de_revoques"]
     assert t["1000"]["der_octets"] > t["10"]["der_octets"]
+
+
+def test_menaces_autorite_du_code_et_limite_d_identite(tmp_path):
+    r = ex.experience_menaces(tmp_path)
+    assert r["controleur_trompe_avec_autorite_du_code"]["illegitimes_emis"] == 0
+    assert r["outil_hallucine"]["illegitimes_emis"] == 0 and r["outil_hallucine"]["appels_refuses"] > 0
+    assert r["sans_autorite_du_code"]["illegitimes_emis"] == 30
+    assert r["sans_autorite_du_code"]["acceptes_ensuite_par_un_client_tls"] < 30       # les Name Constraints en arrêtent une partie
+    # Limite documentée : l'identité du demandeur est déclarative, un Guichet trompé peut faire émettre des demandes illégitimes.
+    assert r["guichet_usurpe"]["illegitimes_emis"] > 0

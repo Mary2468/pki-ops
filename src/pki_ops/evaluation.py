@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import tempfile
 import time
 import tracemalloc
@@ -18,6 +19,9 @@ from .outils.autorite import charger_laboratoire
 from .outils.ceremonie import ceremonie
 
 RACINE = Path(__file__).resolve().parents[2]
+# `PKIOPS_RESULTATS=results_small` : reproduce-small n'écrase pas les résultats complets.
+RESULTATS = RACINE / os.environ.get("PKIOPS_RESULTATS", "results")
+TRACES = RACINE / "traces" if RESULTATS.name == "results" else RESULTATS / "traces"
 
 
 def charger_config(chemin: Path | None = None) -> dict[str, Any]:
@@ -103,7 +107,7 @@ def evaluer_llm(modele_cle: str, repetitions: int, sortie: Path, dossier_traces:
 def experiences_deterministes(sortie: Path) -> dict:
     """mTLS, OCSP/CRL, renouvellement, compromission, registre, expirations, Name Constraints."""
     out = {}
-    for nom in ("mtls", "ocsp", "renouvellement", "compromission", "registre", "expirations", "name_constraints"):
+    for nom in ("mtls", "ocsp", "renouvellement", "compromission", "registre", "expirations", "name_constraints", "menaces"):
         with tempfile.TemporaryDirectory() as tmp:
             out[nom] = getattr(experiences, f"experience_{nom}")(Path(tmp))
     sortie.parent.mkdir(parents=True, exist_ok=True)
