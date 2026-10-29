@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Recherche de secrets (gitleaks)
+        run: |
+          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.21.2/gitleaks_8.21.2_linux_x64.tar.gz | tar -xz gitleaks
+          ./gitleaks detect --no-banner --redact
+
+  tests-et-reproduction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Installation
+        run: uv sync
+      - name: Tests et couverture des outils déterministes (seuil 70 %)
+        run: make test
+      - name: Ollama et petit modèle
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          (ollama serve > ollama.log 2>&1 &)
+          for i in $(seq 1 30); do curl -s localhost:11434/api/version && break || sleep 2; done
+          ollama pull qwen3:0.6b
+      - name: Digest du modèle
+        run: uv run python scripts/verifier_modeles.py qwen3:0.6b || echo "::warning::le digest de qwen3:0.6b diffère de config/experiment.yaml"
+      - name: Reproduction réduite avec le petit modèle
+        run: make reproduce-small
+      - name: Artefacts de métriques
+        uses: actions/upload-artifact@v4
+        with:
+          name: metriques-ci
+          path: |
+            results_small/metrics.json
+            results_small/ENVIRONMENT.json
+            results_small/figures/
+            results_small/raw/
+            results_small/traces/

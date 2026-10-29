@@ -1,0 +1,13 @@
+{
+  "title": "PKI-Ops : autorité intermédiaire opérée par des agents LLM encadrés",
+  "upload_type": "software",
+  "description": "Système multi-agents (Guichet, Contrôleur, AC intermédiaire, Auditeur, Révocation) qui opère une autorité intermédiaire de PKI de laboratoire : politique appliquée par le code, jeton d'approbation, Name Constraints, registre d'émission signé, OCSP et CRL, renouvellement, exercice de compromission, mTLS, modèle de menace évalué. Comprend les données brutes, les métriques et le rapport. Projet individuel bonus du cours Cryptographie appliquée et IA agentique, SUP DE VINCI, 2026.",
+  "creators": [{"name": "AIT BOUHADI, Maryame"}],
+  "license": "MIT",
+  "access_right": "open",
+  "language": "fra",
+  "keywords": ["PKI", "X.509", "agents LLM", "reproductibilité", "Ollama"],
+  "related_identifiers": [
+    {"identifier": "https://github.com/Mary2468/pki-ops", "relation": "isSupplementTo", "scheme": "url"}
+  ]
+}

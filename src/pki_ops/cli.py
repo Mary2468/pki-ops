@@ -70,6 +70,33 @@ def cmd_evaluer(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_ceremonie(args: argparse.Namespace) -> int:
+    """Cérémonie de la racine : saisie de la phrase secrète au clavier et confirmation humaine explicite."""
+    import getpass
+    dossier = Path(args.dossier)
+    if (dossier / "racine" / "racine.key").exists():
+        print("une racine existe déjà dans ce dossier : refus d'écraser")
+        return 1
+    print("La racine va signer l'intermédiaire. Cette opération se fait hors du système d'agents.")
+    if input("Tapez OUI pour confirmer : ").strip() != "OUI":
+        print("annulé")
+        return 1
+    mdp = getpass.getpass("Phrase secrète de la clé racine : ").encode()
+    if mdp != getpass.getpass("Confirmez la phrase secrète : ").encode() or len(mdp) < 12:
+        print("phrases différentes ou trop courtes (12 caractères minimum)")
+        return 1
+    ceremonie(dossier, mdp, True, experiences.DNS)
+    print(f"racine chiffrée et intermédiaire créées dans {dossier}")
+    return 0
+
+
+def cmd_experience(args: argparse.Namespace) -> int:
+    with tempfile.TemporaryDirectory() as tmp:
+        r = getattr(experiences, f"experience_{args.nom}")(Path(tmp))
+    print(json.dumps(r, indent=1, ensure_ascii=False, default=str))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
@@ -87,6 +114,11 @@ def main(argv: list[str] | None = None) -> int:
     e.add_argument("--modele", default="tres_petit", choices=["petit", "tres_petit"])
     e.add_argument("--repetitions", type=int); e.add_argument("--complet", action="store_true")
     e.set_defaults(f=cmd_evaluer)
+    c = sp.add_parser("ceremonie", help="créer la racine et l'intermédiaire (humain obligatoire)")
+    c.add_argument("--dossier", default="pki"); c.set_defaults(f=cmd_ceremonie)
+    x = sp.add_parser("experience", help="rejouer une expérience : mtls, ocsp, renouvellement, compromission, registre, expirations, name_constraints, menaces")
+    x.add_argument("nom", choices=["mtls", "ocsp", "renouvellement", "compromission", "registre", "expirations", "name_constraints", "menaces"])
+    x.set_defaults(f=cmd_experience)
     a = p.parse_args(argv)
     return a.f(a)
 

@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "Si vous utilisez ce logiciel ou ses résultats, merci de le citer avec ces métadonnées."
+title: "PKI-Ops : autorité intermédiaire opérée par des agents LLM encadrés"
+type: software
+authors:
+  - family-names: "AIT BOUHADI"
+    given-names: "Maryame"
+repository-code: "https://github.com/Mary2468/pki-ops"
+url: "https://mary2468.github.io/pki-ops/"
+license: MIT
+version: "1.0.0"
+abstract: >-
+  Système multi-agents (Guichet, Contrôleur, AC intermédiaire, Auditeur, Révocation) qui opère une autorité
+  intermédiaire de PKI de laboratoire : politique appliquée par le code, jeton d'approbation, Name Constraints,
+  registre d'émission signé, OCSP et CRL, renouvellement, exercice de compromission, mTLS, modèle de menace évalué.
+  Projet individuel bonus du cours Cryptographie appliquée et IA agentique, SUP DE VINCI, 2026.
+keywords:
+  - PKI
+  - X.509
+  - agents LLM
+  - reproductibilité
+  - Ollama

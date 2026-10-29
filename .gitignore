@@ -16,3 +16,5 @@ minisign.key
 *-key.pem
 .env
 results/logs/
+results_small/
+results_small_site/
