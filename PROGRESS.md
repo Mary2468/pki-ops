@@ -2,15 +2,20 @@
 
 Dernière mise à jour : 2026-10-29.
 
-## Jalon 1 (29 au 31 octobre) : squelette et PKI de base
+## Jalon 1 (fait) : squelette et PKI de base
+Outils PKI (racine, intermédiaire avec Name Constraints, feuilles, CRL, vérification de chaîne), politique YAML, lecture de CSR.
 
-Fait :
-- Dépôt public Mary2468/pki-ops, identité Git locale propre.
-- Environnement `uv` (Python 3.12), `uv.lock`.
-- `outils/pki.py` : racine, intermédiaire (path length 0, Name Constraints `lab.internal`), CSR, feuille, CRL, vérification de chaîne RFC 5280, chiffrement de la clé racine.
-- `outils/politique.py` + `config/politique.yaml` : lecture de CSR et vérification de politique (noms, domaines, RSA/EC, durée, droits de CA, SAN, format du sujet). Toutes les violations sont listées.
-- 32 tests. Un test témoin montre que le refus d'un nom hors périmètre vient bien des Name Constraints (sans elles, le même certificat passe).
+## Jalon 2 (fait) : agents, orchestrateur, AC, registre
+- Cinq agents (`agents.py`) : Guichet, Contrôleur, AC intermédiaire, Révocation, Auditeur. Prompts versionnés dans `prompts/`. Liste fermée d'outils par agent (`outils/registre.py`) appliquée par l'exécuteur.
+- Orchestrateur (`orchestrateur.py`) avec boucle de vérification : un audit de chaîne négatif révoque le certificat et republie la CRL.
+- La racine est hors du système d'agents (`outils/ceremonie.py`) : elle ne signe qu'avec une validation humaine explicite, sa clé est chiffrée par mot de passe.
+- L'AC n'émet qu'avec un jeton d'approbation (HMAC) que seul le contrôle de politique délivre, et revérifie la politique à l'émission. Le modèle ne voit jamais le jeton ni la CSR.
+- Registre d'émission chaîné par hachage et signé Ed25519 (`outils/registre_emission.py`), alterations détectées (modification, suppression, réordonnancement, autre clé).
+- Annuaire du laboratoire (identité et propriété des noms), 60 demandes de test (`data/demandes.jsonl` : 30 légitimes, 30 illégitimes dont 10 injections).
+- 59 tests, couverture des outils 99 %.
+
+À noter : les CSR du jeu de test sont figées dans le dépôt (les clés privées sont jetées à la génération), la génération n'est donc pas régénérée par `make data`.
 
 Bloquant : aucun.
 
-Prochaine étape : cérémonie de la racine hors agents (clé chiffrée), puis agents Pydantic, orchestrateur, journal JSONL.
+Prochaine étape : serveur OCSP (openssl ocsp) et comparaison CRL, mTLS entre deux services avec refus après révocation, renouvellement automatique, exercice de compromission, évaluation (campagne, ablation, répétitions), modèle de menace, CLI, CI.
