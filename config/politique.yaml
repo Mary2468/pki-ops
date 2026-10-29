@@ -25,4 +25,4 @@ cles:
 sujet:
   attributs_autorises: [CN, O, OU, C]
   longueur_max_valeur: 64
-  motif_valeur: "^[A-Za-z0-9 ._@:-]+$"   # un texte libre (consigne cachée) est refusé par construction
+  motif_valeur: "^[A-Za-z0-9 ._@-]+$"    # refuse guillemets, accolades, deux-points, point-virgule : limite les consignes cachées

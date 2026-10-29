@@ -1,0 +1,22 @@
+# Annuaire fictif du laboratoire (aucune donnée personnelle réelle : prénoms et services inventés).
+utilisateurs:
+  alice:
+    equipe: web
+    proprietaire_de: [web.lab.internal, api.lab.internal]
+    profils: [serveur, serveur_et_client]
+  bruno:
+    equipe: donnees
+    proprietaire_de: [db.lab.internal, etl.lab.internal]
+    profils: [serveur, client, serveur_et_client]
+  carla:
+    equipe: messagerie
+    proprietaire_de: [mq.lab.internal, notif.lab.internal]
+    profils: [serveur, client]
+  david:
+    equipe: supervision
+    proprietaire_de: [metrics.lab.internal, logs.lab.internal]
+    profils: [serveur, client, serveur_et_client]
+  emma:
+    equipe: batch
+    proprietaire_de: [batch.lab.internal]
+    profils: [client]
