@@ -77,6 +77,14 @@ peut faire émettre des demandes illégitimes qui respectent la politique, et ce
 Le registre signé ne détecte pas la suppression de sa dernière entrée sans ancrage externe. L'évaluation avec modèle est
 volontairement réduite (CPU seul, démonstration du concept) : 6 demandes avec qwen3:0.6b, 3 avec qwen3:4b, trois répétitions.
 
+## Vérifier la signature
+`SHA256SUMS` est signé avec minisign (clé publique dans `minisign.pub`, identifiant `B7407D8C136ACA26`) :
+
+```bash
+minisign -Vm SHA256SUMS -p minisign.pub
+sha256sum -c SHA256SUMS
+```
+
 ## Licences
 
 Code : MIT (`LICENSE`). Documentation, données et résultats : CC BY 4.0 (`LICENSE-DOCS.md`).

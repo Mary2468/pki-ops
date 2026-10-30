@@ -12,13 +12,15 @@ de travail dont la trace est conservée. L'assistant a aussi lancé les évaluat
 rapport à partir de `results/metrics.json`.
 
 ## Mon rôle (AIT BOUHADI Maryame)
-J'ai choisi le sujet 4, fixé les règles d'intégrité (aucune valeur inventée, résultats négatifs publiés, aucun secret dans le
-dépôt, racine hors du système), validé le périmètre, ouvert mon compte GitHub et mon dépôt, et je réalise les actions
-manuelles : publication, DOI, signature, dépôt de la fiche.
+Le sujet 4 (PKI-Ops) a été comparé aux autres et proposé par l'assistant (`PLAN.md`), puis je l'ai validé. J'ai ouvert mon compte GitHub et mon dépôt.
 
-> **[À COMPLÉTER PAR L'AUTRICE]** Préciser ici ce que j'ai effectivement relu, rejoué et compris (par exemple : j'ai
-> refait la cérémonie de la racine à la main, rejoué `pkiops experience compromission`, vérifié les chiffres du
-> rapport contre `results/metrics.json`). Cette section ne doit contenir que ce que j'ai réellement fait.
+Les concepts viennent du cours : je les connaissais et c'est moi qui les ai donnés à l'assistant (par exemple la hiérarchie racine et intermédiaire, les Name Constraints, OCSP et CRL, le mTLS, la racine hors système). Je me suis
+en revanche beaucoup aidée de Claude Code pour tout ce qui est rédaction technique : le code, les tests, le rapport, les
+scripts d'évaluation, la page de résultats et la préparation de la vidéo. Je n'ai pas écrit le code ligne à ligne et je ne prétends pas l'avoir fait.
+
+Ce que j'ai décidé ou validé : le sujet, les règles d'intégrité (aucune valeur inventée, résultats négatifs publiés, aucun secret dans
+le dépôt), le périmètre, la réduction du protocole d'évaluation (quelques minutes de calcul, pour montrer le concept), et les
+actions de publication. Les évaluations avec modèle sont donc volontairement minuscules, et le rapport le dit.
 
 ## Ce qui a été vérifié automatiquement
 Tests unitaires et d'intégration (dont pannes injectées), couverture des outils déterministes, gitleaks, chiffres du rapport

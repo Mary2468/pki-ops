@@ -27,3 +27,12 @@ h1[id="1-introduction"] { page-break-before: always; }
 img { max-width: 88%; max-height: 120mm; }
 .titre-page .titre-gros { font-size: 32pt; }
 .titre-page .sous-titre { font-size: 15pt; margin-bottom: 14mm; }
+.titre-page .matiere { font-size: 15pt; margin: 0 0 22mm; }
+.titre-page .auteur { font-size: 17pt; font-weight: bold; margin: 0 0 3mm; }
+.titre-page .enseignant { font-size: 13pt; margin: 0 0 30mm; }
+.titre-page .depot { font-size: 14pt; border: 2pt solid #1f5fa8; padding: 8pt 10pt; display: inline-block; }
+.titre-page .depot a { font-size: 15pt; font-weight: bold; color: #1f5fa8; text-decoration: none; }
+.titre-page { margin-top: 28mm; min-height: 0; }
+.titre-page .ecole { margin-bottom: 24mm; }
+.titre-page .matiere { margin-bottom: 14mm; }
+.titre-page .enseignant { margin-bottom: 22mm; }

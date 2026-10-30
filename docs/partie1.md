@@ -6,15 +6,13 @@
 
 <p class="sous-titre">Une autorité intermédiaire de PKI opérée par des agents LLM encadrés</p>
 
-Projet individuel bonus, cours « Cryptographie appliquée et IA agentique »
+<p class="matiere">Cryptographie appliquée et IA agentique</p>
 
-SUP DE VINCI, année 2026, enseignant : Yulliwas AMEUR
+<p class="auteur">AIT BOUHADI Maryame</p>
 
-**AIT BOUHADI Maryame**
+<p class="enseignant">Enseignant : Yulliwas AMEUR</p>
 
-Sujet 4 : PKI-Ops. Version 1.0.0
-
-Dépôt : https://github.com/Mary2468/pki-ops
+<p class="depot">Dépôt du projet<br><a href="https://github.com/Mary2468/pki-ops">https://github.com/Mary2468/pki-ops</a></p>
 
 </div>
 
