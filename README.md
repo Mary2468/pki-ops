@@ -48,7 +48,7 @@ make audit
 ```
 
 `make reproduce-small` (quelques minutes, qwen3:0.6b) régénère un `results_small/metrics.json`. `make reproduce` refait
-toute l'évaluation (plusieurs heures sur CPU). Sous Windows sans `make` : `scripts/evaluer_tout.ps1`. Configuration
+l'évaluation du rapport (protocole réduit, environ 25 minutes sur CPU). Sous Windows sans `make` : `scripts/evaluer_tout.ps1`. Configuration
 (graine, température, contexte, modèles avec digests) : `config/experiment.yaml` ; machine et versions :
 `results/ENVIRONMENT.json`. **Aucune clé réelle n'est utilisée** : chaque exécution crée une PKI jetable dans un dossier temporaire.
 
@@ -57,7 +57,7 @@ toute l'évaluation (plusieurs heures sur CPU). Sous Windows sans `make` : `scri
 ```bash
 uv run pkiops traiter leg-00                      # une demande de test, trace des agents affichée
 uv run pkiops traiter inj-0 --modele tres_petit   # une tentative d'injection avec un modèle
-uv run pkiops rejouer traces/exemple.jsonl --verifier
+uv run pkiops rejouer traces/exemple/leg-00.jsonl --verifier
 uv run pkiops experience mtls                     # ou ocsp, renouvellement, compromission, registre, name_constraints...
 uv run pkiops ceremonie --dossier pki             # cérémonie de la racine : confirmation humaine et phrase secrète
 ```

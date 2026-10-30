@@ -68,7 +68,7 @@ def main() -> None:
         m["environnement"] = json.loads(env_chemin.read_text(encoding="utf-8"))
     parties = sorted((RACINE / "docs").glob("partie*.md"))
     md = substituer("\n\n".join(f.read_text(encoding="utf-8") for f in parties), m)
-    corps = markdown.markdown(md, extensions=["tables", "fenced_code", "footnotes", "toc", "attr_list"])
+    corps = markdown.markdown(md, extensions=["tables", "fenced_code", "footnotes", "toc", "attr_list", "md_in_html"])
     css = (RACINE / "docs" / "style.css").read_text(encoding="utf-8")
     page = f"<!doctype html><html lang='fr'><head><meta charset='utf-8'><title>Rapport</title><style>{css}</style></head><body>{corps}</body></html>"
     html = RACINE / "docs" / "rapport.html"

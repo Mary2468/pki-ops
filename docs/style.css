@@ -1,6 +1,6 @@
 @page { size: A4; margin: 22mm 20mm 22mm 20mm; @bottom-center { content: counter(page); font-family: Arial, sans-serif; font-size: 10pt; color: #1f5fa8; } }
 body { font-family: Arial, Helvetica, sans-serif; font-size: 10.8pt; line-height: 1.5; color: #1a1a1a; text-align: left; }
-h1 { font-family: Arial, sans-serif; font-size: 19pt; color: #1f5fa8; margin: 26pt 0 10pt; page-break-before: always; border-bottom: 2pt solid #1f5fa8; padding-bottom: 4pt; }
+h1 { font-family: Arial, sans-serif; font-size: 19pt; color: #1f5fa8; margin: 26pt 0 10pt; border-bottom: 2pt solid #1f5fa8; padding-bottom: 4pt; }
 h2 { font-size: 13.5pt; color: #1f5fa8; margin: 16pt 0 6pt; }
 h3 { font-size: 11.5pt; color: #1f5fa8; margin: 12pt 0 4pt; }
 p { margin: 0 0 7pt; orphans: 3; widows: 3; }
@@ -17,3 +17,13 @@ pre { background: #f1f5fa; padding: 6pt 8pt; border-left: 3pt solid #1f5fa8; whi
 .titre-page h2 { color: #333; font-weight: normal; }
 .titre-page p { text-align: center; font-size: 12pt; }
 .resume { margin: 10pt 0; }
+
+.titre-page { page-break-after: always; min-height: 190mm; }
+.titre-page .ecole { font-size: 13pt; letter-spacing: 1pt; text-transform: uppercase; color: #1f5fa8; margin-bottom: 38mm; }
+.titre-page h1 { border: none; }
+.titre-gros { font-family: Arial, sans-serif; font-size: 30pt; font-weight: bold; color: #1f5fa8; margin: 0 0 6pt; }
+.sous-titre { font-size: 15pt; margin-bottom: 14mm; }
+h1[id="1-introduction"] { page-break-before: always; }
+img { max-width: 88%; max-height: 120mm; }
+.titre-page .titre-gros { font-size: 32pt; }
+.titre-page .sous-titre { font-size: 15pt; margin-bottom: 14mm; }

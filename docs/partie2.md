@@ -41,6 +41,8 @@ La CRL se republie en {{experiences.ocsp.crl.delai_republication_ms|n1}} ms. Mai
 
 L'OCSP réagit vite, mais il ajoute un composant en ligne à protéger. La CRL est simple, mais lente à se propager et de plus en plus lourde. Je n'ai pas mesuré le coût côté client.
 
+![Expérience OCSP et CRL](img/ocsp.png)
+
 ## 5.4 mTLS entre deux services
 
 Deux services de laboratoire, `web.lab.internal` et `api.lab.internal`, se connectent avec leurs certificats. Avant la révocation, {{experiences.mtls.acceptes_avant|n0}} appels sur 2 réussissent. J'ai révoqué le certificat de `web`. Après cela, {{experiences.mtls.refuses_apres|n0}} appels sur 2 sont refusés. En TLS 1.3, un refus côté serveur apparaît côté client comme une lecture vide, et non comme une alerte nette. Je compte cette lecture vide comme un refus.
@@ -59,6 +61,8 @@ Ce temps est trompeur si on le prend pour une durée réelle. Il mesure le calcu
 
 ![Étapes de la compromission](../results/figures/compromission_etapes.png)
 
+![Exercice de compromission](img/compromission.png)
+
 ## 5.7 Name Constraints, registre, expirations
 
 Les Name Constraints de l'intermédiaire ont fait refuser par un client TLS {{experiences.name_constraints.hors_domaine_refuses_par_le_client|n0}} certificats sur {{experiences.name_constraints.hors_domaine_total|n0}} émis de force hors de `lab.internal`. {{experiences.name_constraints.temoins_dans_le_domaine_acceptes|n0}} certificats témoins dans le domaine ont été acceptés.
@@ -66,6 +70,10 @@ Les Name Constraints de l'intermédiaire ont fait refuser par un client TLS {{ex
 Pour le registre, j'ai altéré {{experiences.registre.essais_par_type|n0}} copies par type d'attaque. Les insertions, modifications et réordonnancements sont détectés dans {{experiences.registre.detectees.insertion|n0}}, {{experiences.registre.detectees.modification|n0}} et {{experiences.registre.detectees.reordonnancement|n0}} cas sur {{experiences.registre.essais_par_type|n0}}. Les suppressions ne le sont que dans {{experiences.registre.detectees.suppression|n0}} cas sur {{experiences.registre.essais_par_type|n0}}. C'est une limite réelle : supprimer la dernière entrée d'un registre chaîné ne casse aucun lien. Il faudrait ancrer le dernier condensat hors du registre.
 
 Les alertes d'expiration sont justes dans {{experiences.expirations.justes|n0}} cas sur {{experiences.expirations.cas|n0}}.
+
+![Name Constraints](img/name_constraints.png)
+
+![Registre signé](img/registre.png)
 
 # 6. Modèle de menace du système lui-même
 
@@ -122,11 +130,7 @@ Une réexécution ne redonne pas exactement les mêmes durées. Elle redonne les
 
 J'ai construit une autorité intermédiaire dont les agents proposent et dont le code décide. Sur 60 demandes sans modèle, aucun certificat illégitime n'a été émis. Avec deux modèles, sur de très petits échantillons, le résultat est le même. Le gain visible du modèle est la lecture des formulations libres, et son coût est de plusieurs dizaines de secondes par demande sur ma machine. Les garanties de sécurité viennent du code, des Name Constraints et de la racine hors système. La limite que je retiens est l'identité déclarative du demandeur.
 
-# Annexe A. Traces réelles
-
-![Demande légitime](img/traiter_legitime.png)
-
-![Tentative d'injection](img/traiter_injection.png)
+# Annexe A. Rejeu d'une trace
 
 ![Rejeu d'une trace avec vérification](img/rejouer_verifier.png)
 

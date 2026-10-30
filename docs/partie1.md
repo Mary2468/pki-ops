@@ -1,8 +1,10 @@
-<div class="titre-page">
+<div class="titre-page" markdown="1">
 
-# PKI-Ops
+<p class="ecole">SUP DE VINCI · Mastère Cybersécurité</p>
 
-## Une autorité intermédiaire de PKI opérée par des agents LLM encadrés
+<p class="titre-gros">PKI-Ops</p>
+
+<p class="sous-titre">Une autorité intermédiaire de PKI opérée par des agents LLM encadrés</p>
 
 Projet individuel bonus, cours « Cryptographie appliquée et IA agentique »
 
@@ -16,7 +18,7 @@ Dépôt : https://github.com/Mary2468/pki-ops
 
 </div>
 
-<div class="resume">
+<div class="resume" markdown="1">
 
 **Résumé.** J'ai construit PKI-Ops, une autorité intermédiaire de PKI de laboratoire dont les demandes sont traitées par cinq agents : Guichet, Contrôleur, AC intermédiaire, Auditeur et Révocation. Le modèle de langage lit les demandes et propose des décisions. Il ne signe rien et ne décide jamais seul : la politique est appliquée par le code, l'émission exige un jeton d'approbation que seul le code délivre, et l'intermédiaire porte des Name Constraints signées par une racine qui reste hors du système. J'ai construit une campagne de 60 demandes (30 légitimes, 30 illégitimes dont 10 injections). Elle est passée en entier sans modèle ; avec modèle, le protocole est volontairement réduit (6 demandes avec qwen3:0.6b, 3 avec qwen3:4b, trois répétitions chacune) parce que la machine n'a pas de GPU. Sans modèle, {{sans_llm.illegitimes_emis_total|n0}} certificat illégitime a été émis et {{sans_llm.taux_acceptation_legitimes_pct.moyenne|pct}} des demandes légitimes ont été acceptées. J'ai aussi mesuré OCSP contre CRL, deux services en mTLS, un renouvellement automatique, un exercice de compromission chronométré et un modèle de menace du système. Tous les nombres de ce rapport sont lus dans `results/metrics.json` à la construction du PDF.
 
@@ -26,7 +28,7 @@ Dépôt : https://github.com/Mary2468/pki-ops
 
 </div>
 
-
+[TOC]
 
 # 1. Introduction
 
@@ -70,6 +72,10 @@ Un orchestrateur écrit explicitement enchaîne les agents. Chacun a un prompt v
 | Auditeur | vérifier la chaîne, signaler les expirations | vérification de chaîne, expirations |
 | Révocation | révoquer et republier la CRL | révoquer, publier la CRL |
 
+![Parcours d'une demande de certificat : agents, politique du code, racine hors système](img/schema_architecture.png)
+
+*Figure : le parcours d'une demande. Les flèches vertes et rouges sont des éléments de code ou humains, pas des agents.*
+
 ## 3.2 Ce que le code garantit
 
 Quatre garde-fous ne dépendent pas du modèle.
@@ -79,17 +85,39 @@ Quatre garde-fous ne dépendent pas du modèle.
 3. **L'AC revérifie la politique à l'émission.** Même avec un jeton valide, elle refuse si la politique n'est pas respectée.
 4. **L'AC fixe elle-même les extensions.** Elle ne copie jamais celles de la CSR, donc une CSR qui demande des droits de CA reçoit un certificat de feuille.
 
+Voici le code qui produit et vérifie le jeton d'approbation, puis la revérification de la politique à l'émission.
+
+![Jeton HMAC et revérification à l'émission](img/code_autorite.png)
+
+La politique elle-même est un fichier YAML lu par du code.
+
+![Politique de certification](img/code_politique.png)
+
 ## 3.3 La racine hors du système
 
 La clé racine est chiffrée par une phrase secrète. Elle n'est lue que par `ceremonie`, une fonction qui refuse de s'exécuter sans confirmation humaine explicite. Aucun agent n'appelle cette fonction. Pour les exercices de compromission, la même fonction signe une nouvelle intermédiaire après confirmation.
+
+![Cérémonie de la racine](img/code_ceremonie.png)
+
+L'intermédiaire est créée avec une longueur de chemin 0 et des Name Constraints, signées par la racine.
+
+![pathlen 0 et Name Constraints](img/code_pki.png)
 
 ## 3.4 Registre d'émission
 
 Chaque émission et chaque révocation est écrite dans un registre JSONL. Chaque entrée contient le hachage de la précédente et une signature Ed25519. Une modification, une insertion ou un réordonnancement casse le chaînage ou la signature et se voit à la vérification.
 
+![Registre chaîné et signé](img/code_registre_emission.png)
+
 ## 3.5 Boucle de vérification
 
 Après une émission, l'Auditeur vérifie la chaîne du nouveau certificat. Si elle ne passe pas, l'agent Révocation révoque le certificat et republie la CRL. La boucle se ferme donc sans intervention humaine.
+
+Voici une demande légitime traitée sans modèle, puis une tentative d'injection refusée.
+
+![Demande légitime](img/traiter_legitime.png)
+
+![Tentative d'injection](img/traiter_injection.png)
 
 ## 3.6 Défaillances et traçabilité
 

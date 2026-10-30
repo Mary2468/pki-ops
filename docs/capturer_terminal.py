@@ -25,6 +25,10 @@ CAPTURES = [
     ("traiter_injection", "pkiops traiter inj-0", ["pkiops", "traiter", "inj-0"], 30),
     ("rejouer_verifier", "pkiops rejouer traces/exemple/leg-00.jsonl --verifier", ["pkiops", "rejouer", "traces/exemple/leg-00.jsonl", "--verifier"], 34),
     ("mtls", "pkiops experience mtls", ["pkiops", "experience", "mtls"], 40),
+    ("ocsp", "pkiops experience ocsp", ["pkiops", "experience", "ocsp"], 40),
+    ("compromission", "pkiops experience compromission", ["pkiops", "experience", "compromission"], 30),
+    ("name_constraints", "pkiops experience name_constraints", ["pkiops", "experience", "name_constraints"], 30),
+    ("registre", "pkiops experience registre", ["pkiops", "experience", "registre"], 30),
     ("tests", "pytest -q --cov", ["python", "-m", "pytest", "-q", "--cov"], 28),
 ]
 
