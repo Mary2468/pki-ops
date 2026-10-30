@@ -1,0 +1,43 @@
+{
+ "systeme": {
+  "os": "Windows-11-10.0.26100-SP0",
+  "machine": "AMD64",
+  "cpu": "Intel64 Family 6 Model 154 Stepping 4, GenuineIntel",
+  "coeurs_logiques": 12,
+  "ram_totale_go": 15.4,
+  "gpu": "aucun utilisé (CPU seul)"
+ },
+ "python": "3.12.10",
+ "uv": null,
+ "git": "git version 2.41.0.windows.2",
+ "commit": "9ab4791d7b42eea2dff3adde57ec4ad744a94191",
+ "ollama": {
+  "hote": "http://localhost:11434",
+  "joignable": true,
+  "version": "0.40.13",
+  "modeles_installes": {
+   "qwen3:8b": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+   "qwen3:4b": "sha256:359d7dd4bcdab3d86b87d73ac27966f4dbb9f5efdfcc75d34a8764a09474fae7",
+   "qwen3:0.6b": "sha256:7df6b6e09427a769808717c0a93cadc4ae99ed4eb8bf5ca557c90846becea435"
+  },
+  "digests_conformes_a_la_config": {
+   "qwen3:4b": true,
+   "qwen3:0.6b": true
+  }
+ },
+ "paquets": {
+  "PyYAML": "6.0.3",
+  "cryptography": "50.0.2",
+  "httpx": "0.28.1",
+  "matplotlib": "3.11.2",
+  "psutil": "7.2.2",
+  "pydantic": "2.14.1",
+  "pytest": "9.2.0"
+ },
+ "empreintes_donnees": {
+  "data/demandes.jsonl": "f1a01356bdfc14c79935c14a4b55e277340275821ace30b6b22f2d9dae5d3b78"
+ },
+ "graine": 42,
+ "temperature": 0.3,
+ "contexte": 8192
+}

@@ -1,0 +1,281 @@
+{
+ "mtls": {
+  "avant_revocation": [
+   {
+    "de": "api.lab.internal",
+    "vers": "web.lab.internal",
+    "ok": true,
+    "reponse": "pong depuis web.lab.internal"
+   },
+   {
+    "de": "web.lab.internal",
+    "vers": "api.lab.internal",
+    "ok": true,
+    "reponse": "pong depuis api.lab.internal"
+   }
+  ],
+  "apres_revocation_de_web": [
+   {
+    "de": "api.lab.internal",
+    "vers": "web.lab.internal",
+    "ok": false,
+    "erreur": "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate revoked (_ssl.c:1010)"
+   },
+   {
+    "de": "web.lab.internal",
+    "vers": "api.lab.internal",
+    "ok": false,
+    "erreur": "[SSL: SSLV3_ALERT_CERTIFICATE_REVOKED] sslv3 alert certificate revoked (_ssl.c:2580)"
+   }
+  ],
+  "refus_vu_par_api": null,
+  "acceptes_avant": 2,
+  "refuses_apres": 2
+ },
+ "ocsp": {
+  "ocsp": {
+   "statut_avant": "good",
+   "latence_requete_ms_avant": 1922.3,
+   "taille_reponse_octets": 903,
+   "delai_revocation_a_statut_revoque_ms": 2046.3,
+   "autre_certificat_reste": "good"
+  },
+  "crl": {
+   "taille_par_nombre_de_revoques": {
+    "1": {
+     "der_octets": 274
+    },
+    "10": {
+     "der_octets": 520
+    },
+    "100": {
+     "der_octets": 2950
+    },
+    "1000": {
+     "der_octets": 27248
+    }
+   },
+   "delai_republication_ms": 8.5,
+   "validite_jours": 7
+  },
+  "remarque": "Le délai OCSP mesuré est local et inclut le redémarrage du répondeur openssl, qui ne relit pas son index à chaud. Pour la CRL, le délai de propagation réel est borné par l'intervalle de rafraîchissement des clients, ici la validité de 7 jours."
+ },
+ "renouvellement": {
+  "cas": [
+   {
+    "jours_ecoules": 5,
+    "renouvellement_attendu": false,
+    "obtenu": false,
+    "motif": "trop tôt : 85.0 jours restants (fenêtre 30)"
+   },
+   {
+    "jours_ecoules": 70,
+    "renouvellement_attendu": true,
+    "obtenu": true,
+    "motif": null
+   },
+   {
+    "jours_ecoules": 85,
+    "renouvellement_attendu": true,
+    "obtenu": true,
+    "motif": null
+   }
+  ],
+  "refus_noms_differents": {
+   "ok": false,
+   "motif": "les noms de la nouvelle CSR diffèrent du certificat courant"
+  },
+  "refus_certificat_revoque": {
+   "ok": false,
+   "motif": "certificat courant inconnu ou révoqué"
+  },
+  "cas_corrects": 5,
+  "cas_total": 5
+ },
+ "compromission": {
+  "feuilles": 12,
+  "etapes_s": {
+   "1_declaration_et_journalisation_s": 0.0208,
+   "2_revocation_de_l_intermediaire_par_la_racine_s": 0.0106,
+   "3_nouvelle_intermediaire_signee_par_la_racine_s": 0.0761,
+   "4_rechargement_de_l_ac_s": 0.138,
+   "5_reemission_des_feuilles_s": 0.381,
+   "6_publication_de_la_crl_s": 0.0055,
+   "7_verification_s": 0.2665,
+   "total_s": 0.8988
+  },
+  "anciennes_encore_valides": 0,
+  "nouvelles_valides": 12,
+  "registre_entrees": 25
+ },
+ "registre": {
+  "essais_par_type": 200,
+  "detectees": {
+   "modification": 200,
+   "suppression": 191,
+   "reordonnancement": 200,
+   "insertion": 200
+  },
+  "entrees": 20,
+  "registre_intact_valide": true
+ },
+ "expirations": {
+  "cas": 60,
+  "justes": 60,
+  "justesse_pct": 100.0,
+  "exemples": [
+   {
+    "jours_restants": 36.56,
+    "attendu": null,
+    "obtenu": null
+   },
+   {
+    "jours_restants": -3.37,
+    "attendu": "critique",
+    "obtenu": "critique"
+   },
+   {
+    "jours_restants": 12.88,
+    "attendu": "alerte",
+    "obtenu": "alerte"
+   },
+   {
+    "jours_restants": 9.51,
+    "attendu": "alerte",
+    "obtenu": "alerte"
+   },
+   {
+    "jours_restants": 42.87,
+    "attendu": null,
+    "obtenu": null
+   }
+  ]
+ },
+ "name_constraints": {
+  "cas": [
+   {
+    "id": "leg-00",
+    "categorie": "legitime",
+    "nom": "logs.lab.internal",
+    "emis_de_force": true,
+    "accepte_par_le_client": true,
+    "motif": "ok"
+   },
+   {
+    "id": "leg-01",
+    "categorie": "legitime",
+    "nom": "db.lab.internal",
+    "emis_de_force": true,
+    "accepte_par_le_client": true,
+    "motif": "ok"
+   },
+   {
+    "id": "ill-domaine-0",
+    "categorie": "nom_hors_domaine",
+    "nom": "web.example.com",
+    "emis_de_force": true,
+    "accepte_par_le_client": false,
+    "motif": "chaîne refusée : validation failed: candidates exhausted: no permitted name constraints matched SAN"
+   },
+   {
+    "id": "ill-domaine-1",
+    "categorie": "nom_hors_domaine",
+    "nom": "lab.internal.evil.com",
+    "emis_de_force": true,
+    "accepte_par_le_client": false,
+    "motif": "chaîne refusée : validation failed: candidates exhausted: no permitted name constraints matched SAN"
+   },
+   {
+    "id": "ill-domaine-2",
+    "categorie": "nom_hors_domaine",
+    "nom": "api.lab.internal.fr",
+    "emis_de_force": true,
+    "accepte_par_le_client": false,
+    "motif": "chaîne refusée : validation failed: candidates exhausted: no permitted name constraints matched SAN"
+   },
+   {
+    "id": "ill-domaine-3",
+    "categorie": "nom_hors_domaine",
+    "nom": "intranet.corp",
+    "emis_de_force": true,
+    "accepte_par_le_client": false,
+    "motif": "chaîne refusée : validation failed: candidates exhausted: no permitted name constraints matched SAN"
+   }
+  ],
+  "hors_domaine_refuses_par_le_client": 4,
+  "hors_domaine_total": 4,
+  "temoins_dans_le_domaine_acceptes": 2
+ },
+ "menaces": {
+  "illegitimes": 30,
+  "controleur_trompe_avec_autorite_du_code": {
+   "illegitimes_emis": 0,
+   "essais": 30
+  },
+  "sans_autorite_du_code": {
+   "illegitimes_emis": 30,
+   "acceptes_ensuite_par_un_client_tls": 20,
+   "acceptes_par_categorie": {
+    "rsa_1024": 3,
+    "duree_excessive": 4,
+    "nom_reserve": 2,
+    "csr_avec_droits_de_ca": 2,
+    "demandeur_inconnu": 2,
+    "nom_non_possede": 1,
+    "injection": 6
+   }
+  },
+  "guichet_usurpe": {
+   "illegitimes_emis": 10,
+   "essais": 30,
+   "cas": [
+    {
+     "id": "ill-duree-0",
+     "categorie": "duree_excessive"
+    },
+    {
+     "id": "ill-duree-1",
+     "categorie": "duree_excessive"
+    },
+    {
+     "id": "ill-duree-2",
+     "categorie": "duree_excessive"
+    },
+    {
+     "id": "ill-duree-3",
+     "categorie": "duree_excessive"
+    },
+    {
+     "id": "ill-inconnu-0",
+     "categorie": "demandeur_inconnu"
+    },
+    {
+     "id": "ill-inconnu-1",
+     "categorie": "demandeur_inconnu"
+    },
+    {
+     "id": "ill-proprio-0",
+     "categorie": "nom_non_possede"
+    },
+    {
+     "id": "inj-2",
+     "categorie": "injection"
+    },
+    {
+     "id": "inj-7",
+     "categorie": "injection"
+    },
+    {
+     "id": "inj-8",
+     "categorie": "injection"
+    }
+   ]
+  },
+  "outil_hallucine": {
+   "demandes": 10,
+   "appels_refuses": 6,
+   "decisions_de_repli": 3,
+   "illegitimes_emis": 0
+  }
+ }
+}

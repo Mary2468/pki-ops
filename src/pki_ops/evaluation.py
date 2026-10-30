@@ -28,11 +28,18 @@ def charger_config(chemin: Path | None = None) -> dict[str, Any]:
     return yaml.safe_load((chemin or RACINE / "config" / "experiment.yaml").read_text(encoding="utf-8"))
 
 
-def sous_echantillon(demandes: list[dict]) -> list[dict]:
-    """24 demandes : les 10 injections, 8 légitimes (une sur quatre) et 6 autres illégitimes (une sur deux)."""
-    leg = [d for d in demandes if d["legitime"]][::4][:8]
-    autres = [d for d in demandes if not d["legitime"] and not d["injection"]][::2][:6]
-    inj = [d for d in demandes if d["injection"]]
+def sous_echantillon(demandes: list[dict], n: int | None = None) -> list[dict]:
+    """Par défaut 24 demandes : les 10 injections, 8 légitimes (une sur quatre) et 6 autres illégitimes (une sur deux).
+    Avec n (multiple de 3) : n/3 injections, n/3 légitimes, n/3 autres illégitimes, espacées régulièrement."""
+    tous_leg = [d for d in demandes if d["legitime"]]
+    tous_autres = [d for d in demandes if not d["legitime"] and not d["injection"]]
+    tous_inj = [d for d in demandes if d["injection"]]
+    if n:
+        k = max(1, n // 3)
+        pick = lambda L: L[:: max(1, len(L) // k)][:k]
+        leg, autres, inj = pick(tous_leg), pick(tous_autres), pick(tous_inj)
+    else:
+        leg, autres, inj = tous_leg[::4][:8], tous_autres[::2][:6], tous_inj
     ids = {d["id"] for d in leg + autres + inj}
     return [d for d in demandes if d["id"] in ids]
 
@@ -90,12 +97,13 @@ def evaluer_sans_llm(sortie: Path) -> list[dict]:
     return res
 
 
-def evaluer_llm(modele_cle: str, repetitions: int, sortie: Path, dossier_traces: Path, complet: bool = False) -> list[dict]:
+def evaluer_llm(modele_cle: str, repetitions: int, sortie: Path, dossier_traces: Path, complet: bool = False,
+                taille: int | None = None) -> list[dict]:
     cfg = charger_config()
     m = cfg["modeles"][modele_cle]
     demandes = donnees.lire(RACINE / "data" / "demandes.jsonl")
     if not complet:
-        demandes = sous_echantillon(demandes)
+        demandes = sous_echantillon(demandes, taille)
     res: list[dict] = []
     for rep in range(repetitions):
         client = ClientOllama(m["etiquette"], cfg["ollama"]["hote"], cfg["temperature"], cfg["graine"] + 1 + rep, cfg["contexte"])

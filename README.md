@@ -74,8 +74,8 @@ uv run pkiops ceremonie --dossier pki             # cérémonie de la racine : c
 
 Voir `SYSTEM_CARD.md`. L'identité du demandeur est **déclarative** (annuaire sans authentification) : un Guichet trompé
 peut faire émettre des demandes illégitimes qui respectent la politique, et cela est mesuré (`docs/MENACES.md`).
-Le registre signé ne détecte pas la suppression de sa dernière entrée sans ancrage externe. L'évaluation avec le
-modèle de 4 milliards de paramètres porte sur un sous-échantillon (CPU seul).
+Le registre signé ne détecte pas la suppression de sa dernière entrée sans ancrage externe. L'évaluation avec modèle est
+volontairement réduite (CPU seul, démonstration du concept) : 6 demandes avec qwen3:0.6b, 3 avec qwen3:4b, trois répétitions.
 
 ## Licences
 

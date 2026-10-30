@@ -27,8 +27,8 @@ privées des CSR de test sont jetées à la génération : les CSR sont figées 
 
 ## Évaluation
 Voir `results/metrics.json` et `docs/rapport.pdf`. Trois configurations : sans modèle, qwen3:0.6b, qwen3:4b.
-Mesures dépendant du modèle répétées trois fois. Le modèle de 4 milliards de paramètres est évalué sur un
-sous-échantillon de 24 demandes (CPU seul), les autres configurations sur les 60.
+Mesures dépendant du modèle répétées trois fois. Protocole réduit (CPU seul, démonstration du concept) : 60 demandes sans modèle,
+6 demandes avec qwen3:0.6b, 3 demandes avec qwen3:4b. Ces échantillons ne permettent pas de comparer des taux.
 
 ## Limites connues
 - **Identité déclarative** : un Guichet trompé peut faire émettre une demande qui respecte la politique pour un autre propriétaire (mesuré, `docs/MENACES.md`).

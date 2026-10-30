@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["pytest>=8", "pytest-cov>=5", "matplotlib>=3.9"]
+dev = ["pytest>=8", "pytest-cov>=5", "matplotlib>=3.9", "markdown>=3.6"]
 
 [project.scripts]
 pkiops = "pki_ops.cli:main"

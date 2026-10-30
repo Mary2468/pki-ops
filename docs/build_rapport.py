@@ -66,7 +66,8 @@ def main() -> None:
     env_chemin = RESULTATS / "ENVIRONMENT.json"
     if env_chemin.exists():
         m["environnement"] = json.loads(env_chemin.read_text(encoding="utf-8"))
-    md = substituer((RACINE / "docs" / "rapport.md").read_text(encoding="utf-8"), m)
+    parties = sorted((RACINE / "docs").glob("partie*.md"))
+    md = substituer("\n\n".join(f.read_text(encoding="utf-8") for f in parties), m)
     corps = markdown.markdown(md, extensions=["tables", "fenced_code", "footnotes", "toc", "attr_list"])
     css = (RACINE / "docs" / "style.css").read_text(encoding="utf-8")
     page = f"<!doctype html><html lang='fr'><head><meta charset='utf-8'><title>Rapport</title><style>{css}</style></head><body>{corps}</body></html>"

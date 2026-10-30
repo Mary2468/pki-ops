@@ -10,8 +10,8 @@ $py = ".venv\Scripts\python.exe"
 $etapes = @(
     @("baseline", @("evaluer", "baseline")),
     @("experiences", @("evaluer", "experiences")),
-    @("llm_tres_petit", @("evaluer", "llm", "--modele", "tres_petit", "--complet")),
-    @("llm_petit", @("evaluer", "llm", "--modele", "petit"))
+    @("llm_tres_petit", @("evaluer", "llm", "--modele", "tres_petit", "--repetitions", "3", "--taille", "6")),
+    @("llm_petit", @("evaluer", "llm", "--modele", "petit", "--repetitions", "3", "--taille", "3"))
 )
 foreach ($e in $etapes) {
     $debut = Get-Date

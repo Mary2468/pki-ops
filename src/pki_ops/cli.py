@@ -62,7 +62,7 @@ def cmd_evaluer(args: argparse.Namespace) -> int:
         print(f"{len(r)} demandes, {sum(x['emis'] for x in r)} certificats émis")
     elif args.what == "llm":
         cfg = ev.charger_config()
-        r = ev.evaluer_llm(args.modele, args.repetitions or cfg["repetitions"], brut / f"campagne_{args.modele}.jsonl", traces, args.complet)
+        r = ev.evaluer_llm(args.modele, args.repetitions or cfg["repetitions"], brut / f"campagne_{args.modele}.jsonl", traces, args.complet, args.taille)
         print(f"{len(r)} traitements, {sum(x['emis'] for x in r)} émis")
     elif args.what == "experiences":
         out = ev.experiences_deterministes(brut / "experiences.json")
@@ -113,6 +113,7 @@ def main(argv: list[str] | None = None) -> int:
     e.add_argument("what", choices=["baseline", "llm", "experiences"])
     e.add_argument("--modele", default="tres_petit", choices=["petit", "tres_petit"])
     e.add_argument("--repetitions", type=int); e.add_argument("--complet", action="store_true")
+    e.add_argument("--taille", type=int, help="protocole réduit : nombre de demandes (multiple de 3)")
     e.set_defaults(f=cmd_evaluer)
     c = sp.add_parser("ceremonie", help="créer la racine et l'intermédiaire (humain obligatoire)")
     c.add_argument("--dossier", default="pki"); c.set_defaults(f=cmd_ceremonie)

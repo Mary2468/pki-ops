@@ -21,15 +21,15 @@ reproduce-small: environment
 	$(UV) run python scripts/verifier_modeles.py qwen3:0.6b
 	$(UV) run pkiops evaluer baseline
 	$(UV) run pkiops evaluer experiences
-	$(UV) run pkiops evaluer llm --modele tres_petit --repetitions 1
+	$(UV) run pkiops evaluer llm --modele tres_petit --repetitions 1 --taille 3
 	$(MAKE) metrics
 
-# Version complète : plusieurs heures sur CPU (voir docs/rapport.pdf, section Reproductibilité).
+# Protocole du rapport : environ 25 minutes sur CPU (6 demandes avec qwen3:0.6b, 3 avec qwen3:4b, trois répétitions).
 reproduce: environment models
 	$(UV) run pkiops evaluer baseline
 	$(UV) run pkiops evaluer experiences
-	$(UV) run pkiops evaluer llm --modele tres_petit --complet
-	$(UV) run pkiops evaluer llm --modele petit
+	$(UV) run pkiops evaluer llm --modele tres_petit --repetitions 3 --taille 6
+	$(UV) run pkiops evaluer llm --modele petit --repetitions 3 --taille 3
 	$(MAKE) metrics
 
 audit:
