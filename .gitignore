@@ -18,3 +18,5 @@ minisign.key
 results/logs/
 results_small/
 results_small_site/
+docs/rapport.html
+docs/img/*.html

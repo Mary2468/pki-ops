@@ -1,0 +1,19 @@
+@page { size: A4; margin: 22mm 20mm 22mm 20mm; @bottom-center { content: counter(page); font-family: Arial, sans-serif; font-size: 10pt; color: #1f5fa8; } }
+body { font-family: Arial, Helvetica, sans-serif; font-size: 10.8pt; line-height: 1.5; color: #1a1a1a; text-align: left; }
+h1 { font-family: Arial, sans-serif; font-size: 19pt; color: #1f5fa8; margin: 26pt 0 10pt; page-break-before: always; border-bottom: 2pt solid #1f5fa8; padding-bottom: 4pt; }
+h2 { font-size: 13.5pt; color: #1f5fa8; margin: 16pt 0 6pt; }
+h3 { font-size: 11.5pt; color: #1f5fa8; margin: 12pt 0 4pt; }
+p { margin: 0 0 7pt; orphans: 3; widows: 3; }
+table { border-collapse: collapse; margin: 8pt 0 12pt; font-size: 9.6pt; page-break-inside: avoid; width: 100%; }
+th { background: #1f5fa8; color: #fff; text-align: left; padding: 4pt 7pt; }
+td { border-bottom: 0.6pt solid #b9c7d8; padding: 3pt 7pt; vertical-align: top; }
+figure, .fig { text-align: center; margin: 10pt 0; page-break-inside: avoid; }
+img { max-width: 100%; max-height: 100mm; }
+em.legende, p.legende { font-size: 9.5pt; text-align: center; color: #44546a; display: block; }
+pre, code { font-family: Consolas, "Courier New", monospace; font-size: 8.8pt; }
+pre { background: #f1f5fa; padding: 6pt 8pt; border-left: 3pt solid #1f5fa8; white-space: pre-wrap; page-break-inside: avoid; }
+.titre-page { text-align: center; margin-top: 50mm; }
+.titre-page h1 { border: none; font-size: 28pt; page-break-before: avoid; }
+.titre-page h2 { color: #333; font-weight: normal; }
+.titre-page p { text-align: center; font-size: 12pt; }
+.resume { margin: 10pt 0; }

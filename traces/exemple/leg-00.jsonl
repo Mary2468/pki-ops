@@ -1,0 +1,40 @@
+{"t": "2026-10-30T09:18:20.065736+00:00", "id": "leg-00", "type": "debut", "agent": "orchestrateur", "modele": "sans_llm"}
+{"t": "2026-10-30T09:18:20.084630+00:00", "id": "leg-00", "type": "outil_appel", "agent": "guichet", "outil": "parser_demande", "arguments": {}}
+{"t": "2026-10-30T09:18:20.175053+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "guichet", "outil": "parser_demande", "resultat": {"profil": "serveur_et_client", "duree_jours": 60, "noms": ["logs.lab.internal"], "demandeur": "david", "indices_de_consigne": []}}
+{"t": "2026-10-30T09:18:20.180916+00:00", "id": "leg-00", "type": "decision", "agent": "guichet", "source": "sans_llm", "sortie": {"demandeur": "david", "profil": "serveur_et_client", "duree_jours": 60, "complet": true, "justification": "Champs extraits par l'analyse déterministe."}}
+{"t": "2026-10-30T09:18:20.188249+00:00", "id": "leg-00", "type": "outil_appel", "agent": "guichet", "outil": "annuaire_lab", "arguments": {}}
+{"t": "2026-10-30T09:18:20.225101+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "guichet", "outil": "annuaire_lab", "resultat": {"connu": true, "equipe": "supervision", "ok": true, "problemes": []}}
+{"t": "2026-10-30T09:18:20.239569+00:00", "id": "leg-00", "type": "outil_appel", "agent": "controleur", "outil": "lire_csr", "arguments": {}}
+{"t": "2026-10-30T09:18:20.267389+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "controleur", "outil": "lire_csr", "resultat": {"cn": "logs.lab.internal", "sans_dns": ["logs.lab.internal"], "sans_autres": [], "cle": "ec-256", "courbe": "secp256r1", "droits_de_ca": false, "sujet": {"CN": "logs.lab.internal"}, "signature_valide": true}}
+{"t": "2026-10-30T09:18:20.278862+00:00", "id": "leg-00", "type": "outil_appel", "agent": "controleur", "outil": "verifier_politique", "arguments": {}}
+{"t": "2026-10-30T09:18:20.333315+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "controleur", "outil": "verifier_politique", "resultat": {"conforme": true, "violations": []}}
+{"t": "2026-10-30T09:18:20.340097+00:00", "id": "leg-00", "type": "decision", "agent": "controleur", "source": "sans_llm", "sortie": {"decision": "approuver", "justification": "Verdict de politique."}}
+{"t": "2026-10-30T09:18:20.342152+00:00", "id": "leg-00", "type": "decision", "agent": "ac_intermediaire", "source": "sans_llm", "sortie": {"appel": {"outil": "emettre_certificat", "arguments": {}}, "justification": "Demande approuvée par le Contrôleur."}}
+{"t": "2026-10-30T09:18:20.344214+00:00", "id": "leg-00", "type": "outil_appel", "agent": "ac_intermediaire", "outil": "emettre_certificat", "arguments": {}}
+{"t": "2026-10-30T09:18:20.443670+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "ac_intermediaire", "outil": "emettre_certificat", "resultat": {"serie": "fe7b8a6f273f5d0666375b0c9c16e51ef587ab0"}}
+{"t": "2026-10-30T09:18:20.446842+00:00", "id": "leg-00", "type": "outil_appel", "agent": "auditeur", "outil": "verifier_chaine", "arguments": {}}
+{"t": "2026-10-30T09:18:20.472497+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "auditeur", "outil": "verifier_chaine", "resultat": {"ok": true, "motif": "ok"}}
+{"t": "2026-10-30T09:18:20.484907+00:00", "id": "leg-00", "type": "outil_appel", "agent": "auditeur", "outil": "expirations", "arguments": {"dans_jours": 30}}
+{"t": "2026-10-30T09:18:20.495130+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "auditeur", "outil": "expirations", "resultat": {"a_renouveler": []}}
+{"t": "2026-10-30T09:18:20.508734+00:00", "id": "leg-00", "type": "decision", "agent": "auditeur", "source": "sans_llm", "sortie": {"conforme": true, "alerte": ""}}
+{"t": "2026-10-30T09:18:20.510785+00:00", "id": "leg-00", "type": "fin", "agent": "orchestrateur", "statut": "emis", "motif": null, "serie": "fe7b8a6f273f5d0666375b0c9c16e51ef587ab0"}
+{"t": "2026-10-30T09:21:45.489628+00:00", "id": "leg-00", "type": "debut", "agent": "orchestrateur", "modele": "sans_llm"}
+{"t": "2026-10-30T09:21:45.491682+00:00", "id": "leg-00", "type": "outil_appel", "agent": "guichet", "outil": "parser_demande", "arguments": {}}
+{"t": "2026-10-30T09:21:45.523198+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "guichet", "outil": "parser_demande", "resultat": {"profil": "serveur_et_client", "duree_jours": 60, "noms": ["logs.lab.internal"], "demandeur": "david", "indices_de_consigne": []}}
+{"t": "2026-10-30T09:21:45.525322+00:00", "id": "leg-00", "type": "decision", "agent": "guichet", "source": "sans_llm", "sortie": {"demandeur": "david", "profil": "serveur_et_client", "duree_jours": 60, "complet": true, "justification": "Champs extraits par l'analyse déterministe."}}
+{"t": "2026-10-30T09:21:45.527718+00:00", "id": "leg-00", "type": "outil_appel", "agent": "guichet", "outil": "annuaire_lab", "arguments": {}}
+{"t": "2026-10-30T09:21:45.546464+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "guichet", "outil": "annuaire_lab", "resultat": {"connu": true, "equipe": "supervision", "ok": true, "problemes": []}}
+{"t": "2026-10-30T09:21:45.548658+00:00", "id": "leg-00", "type": "outil_appel", "agent": "controleur", "outil": "lire_csr", "arguments": {}}
+{"t": "2026-10-30T09:21:45.558177+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "controleur", "outil": "lire_csr", "resultat": {"cn": "logs.lab.internal", "sans_dns": ["logs.lab.internal"], "sans_autres": [], "cle": "ec-256", "courbe": "secp256r1", "droits_de_ca": false, "sujet": {"CN": "logs.lab.internal"}, "signature_valide": true}}
+{"t": "2026-10-30T09:21:45.560224+00:00", "id": "leg-00", "type": "outil_appel", "agent": "controleur", "outil": "verifier_politique", "arguments": {}}
+{"t": "2026-10-30T09:21:45.603519+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "controleur", "outil": "verifier_politique", "resultat": {"conforme": true, "violations": []}}
+{"t": "2026-10-30T09:21:45.622333+00:00", "id": "leg-00", "type": "decision", "agent": "controleur", "source": "sans_llm", "sortie": {"decision": "approuver", "justification": "Verdict de politique."}}
+{"t": "2026-10-30T09:21:45.625183+00:00", "id": "leg-00", "type": "decision", "agent": "ac_intermediaire", "source": "sans_llm", "sortie": {"appel": {"outil": "emettre_certificat", "arguments": {}}, "justification": "Demande approuvée par le Contrôleur."}}
+{"t": "2026-10-30T09:21:45.625183+00:00", "id": "leg-00", "type": "outil_appel", "agent": "ac_intermediaire", "outil": "emettre_certificat", "arguments": {}}
+{"t": "2026-10-30T09:21:45.712298+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "ac_intermediaire", "outil": "emettre_certificat", "resultat": {"serie": "5568a246d271745de08fdd6cd96883479733cf2e"}}
+{"t": "2026-10-30T09:21:45.738229+00:00", "id": "leg-00", "type": "outil_appel", "agent": "auditeur", "outil": "verifier_chaine", "arguments": {}}
+{"t": "2026-10-30T09:21:45.774457+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "auditeur", "outil": "verifier_chaine", "resultat": {"ok": true, "motif": "ok"}}
+{"t": "2026-10-30T09:21:45.776514+00:00", "id": "leg-00", "type": "outil_appel", "agent": "auditeur", "outil": "expirations", "arguments": {"dans_jours": 30}}
+{"t": "2026-10-30T09:21:45.787124+00:00", "id": "leg-00", "type": "outil_resultat", "agent": "auditeur", "outil": "expirations", "resultat": {"a_renouveler": []}}
+{"t": "2026-10-30T09:21:45.789181+00:00", "id": "leg-00", "type": "decision", "agent": "auditeur", "source": "sans_llm", "sortie": {"conforme": true, "alerte": ""}}
+{"t": "2026-10-30T09:21:45.789181+00:00", "id": "leg-00", "type": "fin", "agent": "orchestrateur", "statut": "emis", "motif": null, "serie": "5568a246d271745de08fdd6cd96883479733cf2e"}
