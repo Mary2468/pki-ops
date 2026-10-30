@@ -1,6 +1,6 @@
 [project]
 name = "pki-ops"
-version = "0.1.0"
+version = "1.0.0"
 description = "Mini-PKI Ã  deux niveaux opÃ©rÃ©e par des agents IA, avec humain dans la boucle"
 readme = "README.md"
 requires-python = ">=3.11"
